@@ -1,5 +1,6 @@
 package com.example.rentACar.business.concretes;
 
+import com.example.rentACar.Core.utilities.mappers.ModelMapperService;
 import com.example.rentACar.business.abstracts.IBrandService;
 import com.example.rentACar.business.requests.CreateBrandRequest;
 import com.example.rentACar.business.responses.GetAllBrandsResponse;
@@ -8,34 +9,39 @@ import com.example.rentACar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class BrandManager implements IBrandService {
     private IBrandRepository _brandRepository;
+    private ModelMapperService _modelMapperService;
 
     @Override
     public List<GetAllBrandsResponse> getAll(){
         List<Brand> brands=_brandRepository.findAll();
-        List<GetAllBrandsResponse> brandsResponse=new ArrayList<GetAllBrandsResponse>();
-
+       //ModelMapper kullanmadan önce
+        /* List<GetAllBrandsResponse> brandsResponse=new ArrayList<GetAllBrandsResponse>();
         for (Brand brand:brands){
             GetAllBrandsResponse responseItem=new GetAllBrandsResponse();
             responseItem.setId(brand.getId());
             responseItem.setName(brand.getName());
-
             brandsResponse.add(responseItem);
-        }
+        }*/
 
+        List<GetAllBrandsResponse> brandsResponse=brands.stream()
+                .map(brand ->this._modelMapperService.forResponse().map(brand, GetAllBrandsResponse.class)).collect(Collectors.toList());
+        //iş kuralları
         return brandsResponse;
     }
 
     @Override
     public void add(CreateBrandRequest createBrandRequest) {
-        Brand brand =new Brand();
-        brand.setName(createBrandRequest.getName());
+        // Brand brand=new Brand();
+        // brand.setName(createBrandRequest.getName());
+
+        Brand brand = this._modelMapperService.forRequest().map(createBrandRequest,Brand.class);
         this._brandRepository.save(brand);
     }
 
