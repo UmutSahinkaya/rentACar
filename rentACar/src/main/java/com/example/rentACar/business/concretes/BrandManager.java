@@ -32,7 +32,8 @@ public class BrandManager implements IBrandService {
             brandsResponse.add(responseItem);
         }*/
 
-        List<GetAllBrandsResponse> brandsResponse=brands.stream()
+        List<GetAllBrandsResponse> brandsResponse;
+        brandsResponse=brands.stream()
                 .map(brand ->this._modelMapperService.forResponse().map(brand, GetAllBrandsResponse.class)).collect(Collectors.toList());
         //iş kuralları
         return brandsResponse;
