@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class BrandBusinessRules {
     private IBrandRepository _brandRepository;
     public void checkIfBrandNameExists(String name){
-        if(!this._brandRepository.existsByName(name)){
+        if(this._brandRepository.existsByName(name)){
             throw new BusinessException("Brand already exists");
         }
     }

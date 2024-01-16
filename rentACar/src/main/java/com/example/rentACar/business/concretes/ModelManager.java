@@ -23,6 +23,7 @@ public class ModelManager implements IModelService {
 
         List<GetAllModelsResponse> response;
         response=models.stream().map(model -> this._modelMapper.forResponse().map(model,GetAllModelsResponse.class)).collect(Collectors.toList());
+
         return response;
     }
 

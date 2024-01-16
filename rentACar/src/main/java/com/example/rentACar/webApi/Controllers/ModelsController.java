@@ -1,11 +1,11 @@
 package com.example.rentACar.webApi.Controllers;
 
 import com.example.rentACar.business.abstracts.IModelService;
+import com.example.rentACar.business.requests.CreateModelRequest;
 import com.example.rentACar.business.responses.GetAllModelsResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,5 +18,11 @@ public class ModelsController {
     @GetMapping
     public List<GetAllModelsResponse> getAll(){
         return _service.getAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void add(@RequestBody() CreateModelRequest createModelRequest){
+        this._service.add(createModelRequest);
     }
 }
