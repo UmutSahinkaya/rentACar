@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Table(name="models")
 @Getter
 @Setter
@@ -24,4 +26,7 @@ public class Model {
     @ManyToOne
     @JoinColumn(name = "brand_id")//normalde brandId yazılır fakat postgrede yazıldığı gibi çözebiliyor.
     private Brand brand;
+
+    @OneToMany(mappedBy = "model")
+    private List<Car> cars;
 }
